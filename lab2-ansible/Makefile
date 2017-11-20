@@ -2,6 +2,8 @@ OPTS = -input=false
 TFPLAN = plan
 
 all:
+	@echo make lab02
+
 	@echo make clean
 	@echo make plan
 	@echo make apply
@@ -9,12 +11,15 @@ all:
 	@echo make output
 	@echo make destroy
 
+	@echo make prepare
+
 
 clean:
 	rm -rf .terraform
 	rm -f ${TFPLAN}
 	rm -f terraform.tfstate*
 	rm -f *~
+	rm -f ansible/playbooks/*~ ansible/playbooks/*retry
 
 plan:
 	@if [ ! -d .terraform ]; then terraform init; fi
@@ -36,5 +41,9 @@ show:
 apply: plan
 	terraform apply ${OPTS} ${TFPLAN}
 
-conf:
-	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook ansible/playbooks/test.yml -i ansible/files/hosts
+prepare:
+	sleep 10
+	bash lab02.sh
+
+lab02: clean plan apply refresh prepare
+	@echo done

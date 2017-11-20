@@ -1,0 +1,44 @@
+---
+- name: lab02
+  hosts: aws
+  become: true
+  become_user: root
+  remote_user: ec2-user
+
+  tasks:
+
+  - name: upgrade all packages
+    yum:
+        name: '*'
+        state: latest
+
+  - name: install docker
+    yum:
+        name: docker
+        state: latest
+
+  - name: install docker-compose
+    get_url:
+      url: https://github.com/docker/compose/releases/download/1.17.0/docker-compose-Linux-x86_64
+      dest: /usr/local/bin/docker-compose
+      mode: 0755
+
+  - name: start docker daemon
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: get docker hello-world image
+    command: docker pull hello-world
+
+  - name: get docker dockviz image
+    command: docker pull nate/dockviz
+
+  - name: get docker centos image
+    command: docker pull centos
+
+  - name: own permission for docker to ec2 user
+    user:
+      name: ec2-user
+      groups: docker

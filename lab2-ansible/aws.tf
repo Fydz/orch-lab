@@ -1,5 +1,5 @@
 resource "aws_security_group" "default" {
-  name = "terraform-test"
+  name = "lab02"
 
   # Allow SSH & HTTP in
   ingress {
@@ -47,12 +47,7 @@ resource "aws_instance" "test-srv-01" {
 
 # ------------------------
 
-#resource "aws_eip" "test01" {
-#  instance = "${aws_instance.test-srv-01.id}"
-#  vpc      = true
-#}
-
-output "ip" {
+output "srv01-ip" {
     # value = "${aws_eip.test01.public_ip}"
     value = "${aws_instance.test-srv-01.public_ip}"
 }
