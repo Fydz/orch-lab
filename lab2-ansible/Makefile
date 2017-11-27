@@ -26,7 +26,7 @@ plan:
 	terraform plan ${OPTS} -out=${TFPLAN}
 
 destroy:
-	terraform destroy ${OPTS}
+	terraform destroy -force
 	make clean
 
 output:
@@ -42,7 +42,7 @@ apply: plan
 	terraform apply ${OPTS} ${TFPLAN}
 
 prepare:
-	sleep 10
+	sleep 20
 	bash lab02.sh
 
 lab02: clean plan apply refresh prepare

@@ -48,6 +48,5 @@ resource "aws_instance" "test-srv-01" {
 # ------------------------
 
 output "srv01-ip" {
-    # value = "${aws_eip.test01.public_ip}"
     value = "${aws_instance.test-srv-01.public_ip}"
 }

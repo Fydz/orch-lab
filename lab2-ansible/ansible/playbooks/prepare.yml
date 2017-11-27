@@ -6,7 +6,6 @@
   remote_user: ec2-user
 
   tasks:
-
   - name: upgrade all packages
     yum:
         name: '*'
