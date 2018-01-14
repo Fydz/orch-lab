@@ -1,0 +1,35 @@
+
+# ---------------------------------------------------------- 
+    - name: remove docker
+      yum:
+        name: docker
+        state: absent
+        
+    - name: remove docker client
+      yum:
+        name: docker-client
+        state: absent
+        
+    - name: remove docker common
+      yum:
+        name: docker-common
+        state: absent
+
+        
+    - name: Add repository docker
+      yum_repository:
+        name: docker-ce
+        description: EPEL YUM repo
+        baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
+    
+    - name: install docker
+      yum:
+        name: docker-ce
+        state: latest
+        disable_gpg_check: yes
+
+    - name: start docker daemon
+      service:
+        name: docker
+        state: started
+        enabled: yes

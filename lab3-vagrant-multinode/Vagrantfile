@@ -1,0 +1,71 @@
+# vagrant plugin install vagrant-triggers
+
+cluster = {
+  "docker-node01" => { :cpu => 2, :mem => 2048, :swarm => "master" },
+  "docker-node02" => { :cpu => 2, :mem => 2048, :swarm => "slave" },
+  "docker-node03" => { :cpu => 2, :mem => 2048, :swarm => "slave" },
+  "docker-node04" => { :cpu => 2, :mem => 2048, :swarm => "slave" }
+}
+
+Vagrant.configure("2") do |config|
+	config.vm.box = "centos/7"
+	config.vm.network "public_network"
+	config.vm.synced_folder ".", "/vagrant"
+
+	# create the inventory file from the cluster information
+	File.open('inventory' ,'w') do |f|
+		cluster.each_with_index do |(hostname, info), index|
+			f.write "#{hostname} ansible_connection=local\n"
+		end
+		f.write "\n[default]\n"
+		cluster.each_with_index do |(hostname, info), index|
+			f.write "#{hostname}\n"
+		end
+	end
+	
+	config.trigger.after :up, :stdout => false, :stderr => false do
+		hostname = "#{@machine.name}"
+		
+		if cluster[hostname][:swarm].eql? "master" then
+			puts "=> master swarm node"
+			get_ip_address = %Q(vagrant ssh #{@machine.name} -c "ip addr show eth1 | grep 'inet ' | cut -d' ' -f6 | cut -d/ -f1")
+			output = `#{get_ip_address}`
+			cluster[hostname][:ip] = "#{output.strip}"
+		
+			start_swarm = %Q(vagrant ssh #{@machine.name} -c "docker swarm leave --force >/dev/null 2>&1  ; docker swarm init --advertise-addr #{cluster[hostname][:ip]} | fgrep 'docker swarm join --token'")
+			output = `#{start_swarm}`
+			# puts "==> #{@machine.name}: swarm init #{output.strip}"
+			$swarm_join = "#{output.strip}"
+		else
+			puts "=> slave swarm node"
+			start_swarm = %Q(vagrant ssh #{@machine.name} -c "docker swarm leave --force >/dev/null 2>&1  ; #{$swarm_join}")
+			output = `#{start_swarm}`
+			# puts "==> #{@machine.name}: swarm init #{output.strip}"
+		end
+	end
+			
+	# build all the VMs on the same model
+    cluster.each_with_index do |(hostname, info), index|
+		config.vm.define hostname do |machine|
+			config.vm.provider "virtualbox" do |v|
+				v.memory = info[:mem]
+				v.cpus = info[:cpu]
+				v.name = hostname
+			end
+			
+			# avoid automatic installation from epel, too slow
+			config.vm.provision "shell",
+				inline: "yum install --assumeyes --quiet ansible"
+	
+			config.vm.provision "ansible_local" do |ansible|
+				ansible.install = true
+				ansible.install_mode = "pip"
+				ansible.playbook = "playbook-node.yml"
+				ansible.inventory_path = "inventory"
+				ansible.extra_vars = {
+					vag_name: hostname
+				}
+			end
+		end
+	end
+end

@@ -1,0 +1,6 @@
+# ---------------------------------------------------------- 
+
+    - name: own permission for docker to vagrant
+      user:
+        name: vagrant
+        groups: docker

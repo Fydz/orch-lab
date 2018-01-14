@@ -1,0 +1,13 @@
+---
+- name: lab
+  hosts: "{{ vag_name }}"
+  become: true
+  become_user: root
+
+  tasks:
+    - name: set hostname
+      hostname:
+        name: "{{ vag_name }}"
+
+    - import_tasks : playbook-docker.yml
+    - import_tasks : playbook-user.yml
