@@ -37,8 +37,8 @@ resource "aws_security_group" "ssh_http" {
 resource "aws_instance" "test-srv-01" {
   ami                    = "ami-acd005d5"
   instance_type          = "t2.nano"
-  key_name               = "${aws_key_pair.ssh_http.id}"
-  vpc_security_group_ids = ["${aws_security_group.default.id}"]
+  key_name               = "${aws_key_pair.default.id}"
+  vpc_security_group_ids = ["${aws_security_group.ssh_http.id}"]
 
   tags {
     Name = "test01"
