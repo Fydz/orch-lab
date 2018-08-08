@@ -1,0 +1,4 @@
+resource "aws_key_pair" "alex" {
+  key_name   = "${var.env} YOUR NAME"
+  public_key = "ssh-rsa SSH PUBLIC KEY"
+}
