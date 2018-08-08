@@ -16,15 +16,15 @@ installation DRUPAL
 * install drupal from the web console
 * install modules, themes, ...
 * on the server through ssh, from /var/app/current create new drupal-v1.zip
-  * zip /tmp/drupal-v1.zip -r -u * .[^.]* -x sites/default\*
+  * zip /tmp/drupal-v1.zip -r -u * .[^.]* -x sites/default\\*
 * add .ebextensions directory to the archive
 * publish the final version to beanstalk
 
 commands
 ---------
-terraform init
-terraform plan
-terraform apply --auto-approve
+* terraform init
+* terraform plan
+* terraform apply --auto-approve
 
 
 biblio
