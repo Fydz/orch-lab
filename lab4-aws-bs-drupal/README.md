@@ -1,6 +1,5 @@
 installation DRUPAL
 -------------------
-* create a specific account in AWS IAM for this application
 * install infrastructure with terraform (init, plan, apply)
   * this should take around 5 minutes
   * check sites/default/files is a link to the S3 bucket
