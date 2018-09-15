@@ -6,7 +6,7 @@ variable "env" {
 
 variable "app" {
     type = "string"
-    default = "mmh-extranet"
+    default = "mmh-portal"
 }
 
 variable "customer" {

@@ -29,12 +29,12 @@ commands
 
 biblio
 ------
-instance profile for environnement
- https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html
+* instance profile for environnement
+ * https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html
 
-S3
- https://github.com/s3fs-fuse/s3fs-fuse/wiki/Fuse-Over-Amazon
- https://cloudkul.com/blog/mounting-s3-bucket-linux-ec2-instance/
+* S3
+ * https://github.com/s3fs-fuse/s3fs-fuse/wiki/Fuse-Over-Amazon
+ * https://cloudkul.com/blog/mounting-s3-bucket-linux-ec2-instance/
 
-EC2 customize:
- https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html
+* EC2 customize:
+ * https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html
