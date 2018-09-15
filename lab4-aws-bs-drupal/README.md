@@ -6,12 +6,12 @@ installation DRUPAL
 * create drupal package
   * create a drupal-X directory
   * from the drupal source
-  * add .ebextensions directory
+  * add beanstalk-settings.php in /
+  * add .ebextensions directory in /
   * copy and adapt the startup.config file in .ebextensions (this will be used at boot by beanstalk)
-  * add beanstalk-settings.php
   * zip : zip ../drupal-v0.zip -r -u * .[^.]*
 * (option) add CNAME in your DNS pointing to the host created and available at beanstalk console and in the eb-cname output
-* from the beanstalk console, add the version (drupal-v0.zip)
+* from the beanstalk console, add the version which has been uploaded (drupal-v0)
   * this should take around 2 minutes
 * install drupal from the web console
 * install modules, themes, ...
@@ -25,6 +25,7 @@ commands
 * terraform init
 * terraform plan
 * terraform apply --auto-approve
+* terraform graph | dot -Tsvg > graph.svg
 
 
 biblio

@@ -212,3 +212,16 @@ data "aws_instance" "eb-ec2" {
 output "eb-ec2-public-ip" {
   value = "${data.aws_instance.eb-ec2.public_ip}"
 }
+
+# ---------------------------------------------------------------
+resource "aws_elastic_beanstalk_application_version" "v0" {
+  name        = "drupal-v0"
+  application = "${aws_elastic_beanstalk_application.eb-app.name}"
+  description = "initial version of drupal, no configuration"
+  bucket      = "${aws_s3_bucket.s3-drupal.id}"
+  key         = "${aws_s3_bucket_object.drupal.id}"
+}
+
+output "application-version" {
+  value = "${aws_elastic_beanstalk_application_version.v0.name}"
+}
